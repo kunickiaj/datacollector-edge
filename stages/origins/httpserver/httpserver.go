@@ -1,14 +1,15 @@
 package httpserver
 
 import (
+	"bytes"
 	"github.com/streamsets/datacollector-edge/api"
 	"github.com/streamsets/datacollector-edge/container/common"
+	"github.com/streamsets/datacollector-edge/container/recordio/jsonrecord"
 	"github.com/streamsets/datacollector-edge/stages/stagelibrary"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 const (
@@ -63,10 +64,26 @@ func (h *HttpServerOrigin) Produce(
 	batchMaker api.BatchMaker,
 ) (string, error) {
 	log.Println("[DEBUG] HTTP Server - Produce method")
-	value := <-h.incomingData
-	log.Println("[DEBUG] Incoming Data: ", value)
-	record, _ := h.GetStageContext().CreateRecord(time.Now().String(), value)
-	batchMaker.AddRecord(record)
+	recordReaderFactoryImpl := &jsonrecord.JsonReaderFactoryImpl{}
+
+	for recordCnt := 0; recordCnt < 1000; recordCnt++ {
+		value := <-h.incomingData
+		log.Printf("[DEBUG] Incoming Data: %s, Record Count : %s \n", value, strconv.FormatInt(int64(recordCnt), 10))
+		bufferWriter := bytes.NewBuffer([]byte{})
+		bufferWriter.WriteString(value.(string))
+
+		if recordReader, err := recordReaderFactoryImpl.CreateReader(h.GetStageContext(), bufferWriter); err == nil {
+			record, er := recordReader.ReadRecord()
+			if er == nil {
+				batchMaker.AddRecord(record)
+			} else {
+				return "", er
+			}
+		} else {
+			log.Println("[Error] cannot deserialize json", value)
+			return "", err
+		}
+	}
 	return "", nil
 }
 

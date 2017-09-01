@@ -1,0 +1,18 @@
+{
+"pipelineId" : "httpServerToTensorToHttp",
+"title" : "httpServerToTensorToHttp",
+"description" : "",
+"created" : 1504257389482,
+"lastModified" : 1504257609956,
+"creator" : "admin",
+"lastModifier" : "admin",
+"lastRev" : "0",
+"uuid" : "0ff091ed-41c3-435c-b1e2-186d5eb39d56",
+"valid" : true,
+"metadata" : {
+"labels" : [ ]
+},
+"name" : "httpServerToTensorToHttp",
+"sdcVersion" : "2.8.0.0-SNAPSHOT",
+"sdcId" : "258ce8ef-8ef6-11e7-8f48-9d3b10c2b3b4"
+}

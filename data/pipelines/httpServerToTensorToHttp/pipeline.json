@@ -1,0 +1,757 @@
+{
+  "schemaVersion" : 4,
+  "version" : 7,
+  "pipelineId" : "httpServerToTensorToHttp",
+  "title" : "httpServerToTensorToHttp",
+  "description" : "",
+  "uuid" : "0ff091ed-41c3-435c-b1e2-186d5eb39d56",
+  "configuration" : [ {
+    "name" : "executionMode",
+    "value" : "EDGE"
+  }, {
+    "name" : "deliveryGuarantee",
+    "value" : "AT_LEAST_ONCE"
+  }, {
+    "name" : "startEventStage",
+    "value" : "streamsets-datacollector-basic-lib::com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget::1"
+  }, {
+    "name" : "stopEventStage",
+    "value" : "streamsets-datacollector-basic-lib::com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget::1"
+  }, {
+    "name" : "shouldRetry",
+    "value" : true
+  }, {
+    "name" : "retryAttempts",
+    "value" : -1
+  }, {
+    "name" : "memoryLimit",
+    "value" : "${jvm:maxMemoryMB() * 0.65}"
+  }, {
+    "name" : "memoryLimitExceeded",
+    "value" : "STOP_PIPELINE"
+  }, {
+    "name" : "notifyOnStates",
+    "value" : [ "RUN_ERROR", "STOPPED", "FINISHED" ]
+  }, {
+    "name" : "emailIDs",
+    "value" : [ ]
+  }, {
+    "name" : "constants",
+    "value" : [ {
+      "key" : "serverAppId",
+      "value" : "tensorFlowReceiver"
+    }, {
+      "key" : "clientAppId",
+      "value" : "tensorFlowSender"
+    }, {
+      "key" : "clientHttpUrl",
+      "value" : "http://localhost:20000"
+    }, {
+      "key" : "serverPort",
+      "value" : "10000"
+    }, {
+      "key" : "modelPath",
+      "value" : "/Users/kumar/activity_tracker"
+    } ]
+  }, {
+    "name" : "badRecordsHandling",
+    "value" : "streamsets-datacollector-basic-lib::com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget::1"
+  }, {
+    "name" : "errorRecordPolicy",
+    "value" : "ORIGINAL_RECORD"
+  }, {
+    "name" : "workerCount",
+    "value" : 0
+  }, {
+    "name" : "clusterSlaveMemory",
+    "value" : 1024
+  }, {
+    "name" : "clusterSlaveJavaOpts",
+    "value" : "-XX:+UseConcMarkSweepGC -XX:+UseParNewGC -Dlog4j.debug"
+  }, {
+    "name" : "clusterLauncherEnv",
+    "value" : [ ]
+  }, {
+    "name" : "mesosDispatcherURL",
+    "value" : null
+  }, {
+    "name" : "hdfsS3ConfDir",
+    "value" : null
+  }, {
+    "name" : "rateLimit",
+    "value" : 0
+  }, {
+    "name" : "maxRunners",
+    "value" : 0
+  }, {
+    "name" : "webhookConfigs",
+    "value" : [ ]
+  }, {
+    "name" : "sparkConfigs",
+    "value" : [ ]
+  }, {
+    "name" : "statsAggregatorStage",
+    "value" : "streamsets-datacollector-basic-lib::com_streamsets_pipeline_stage_destination_devnull_StatsDpmDirectlyDTarget::1"
+  } ],
+  "uiInfo" : {
+    "previewConfig" : {
+      "previewSource" : "CONFIGURED_SOURCE",
+      "batchSize" : 10,
+      "timeout" : 10000,
+      "writeToDestinations" : false,
+      "executeLifecycleEvents" : false,
+      "showHeader" : false,
+      "showFieldType" : true,
+      "rememberMe" : false
+    }
+  },
+  "stages" : [ {
+    "instanceName" : "HTTPServer_01",
+    "library" : "streamsets-datacollector-basic-lib",
+    "stageName" : "com_streamsets_pipeline_stage_origin_httpserver_HttpServerDPushSource",
+    "stageVersion" : "10",
+    "configuration" : [ {
+      "name" : "httpConfigs.tlsConfigBean.tlsEnabled",
+      "value" : false
+    }, {
+      "name" : "httpConfigs.tlsConfigBean.keyStoreFilePath",
+      "value" : null
+    }, {
+      "name" : "httpConfigs.tlsConfigBean.keyStoreType",
+      "value" : "JKS"
+    }, {
+      "name" : "httpConfigs.tlsConfigBean.keyStorePassword",
+      "value" : null
+    }, {
+      "name" : "httpConfigs.tlsConfigBean.keyStoreAlgorithm",
+      "value" : "SunX509"
+    }, {
+      "name" : "httpConfigs.tlsConfigBean.useDefaultProtocols",
+      "value" : true
+    }, {
+      "name" : "httpConfigs.tlsConfigBean.protocols",
+      "value" : [ ]
+    }, {
+      "name" : "httpConfigs.tlsConfigBean.useDefaultCiperSuites",
+      "value" : true
+    }, {
+      "name" : "httpConfigs.tlsConfigBean.cipherSuites",
+      "value" : [ ]
+    }, {
+      "name" : "httpConfigs.port",
+      "value" : "${serverPort}"
+    }, {
+      "name" : "httpConfigs.maxConcurrentRequests",
+      "value" : 10
+    }, {
+      "name" : "httpConfigs.appId",
+      "value" : "${serverAppId}"
+    }, {
+      "name" : "httpConfigs.appIdViaQueryParamAllowed",
+      "value" : false
+    }, {
+      "name" : "maxRequestSizeMB",
+      "value" : 100
+    }, {
+      "name" : "dataFormat",
+      "value" : "JSON"
+    }, {
+      "name" : "dataFormatConfig.compression",
+      "value" : "NONE"
+    }, {
+      "name" : "dataFormatConfig.filePatternInArchive",
+      "value" : "*"
+    }, {
+      "name" : "dataFormatConfig.charset",
+      "value" : "UTF-8"
+    }, {
+      "name" : "dataFormatConfig.removeCtrlChars",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.textMaxLineLen",
+      "value" : 1024
+    }, {
+      "name" : "dataFormatConfig.useCustomDelimiter",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.customDelimiter",
+      "value" : "\\r\\n"
+    }, {
+      "name" : "dataFormatConfig.includeCustomDelimiterInTheText",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.jsonContent",
+      "value" : "MULTIPLE_OBJECTS"
+    }, {
+      "name" : "dataFormatConfig.jsonMaxObjectLen",
+      "value" : 4096
+    }, {
+      "name" : "dataFormatConfig.csvFileFormat",
+      "value" : "CSV"
+    }, {
+      "name" : "dataFormatConfig.csvHeader",
+      "value" : "NO_HEADER"
+    }, {
+      "name" : "dataFormatConfig.csvMaxObjectLen",
+      "value" : 1024
+    }, {
+      "name" : "dataFormatConfig.csvAllowExtraColumns",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.csvExtraColumnPrefix",
+      "value" : "_extra_"
+    }, {
+      "name" : "dataFormatConfig.csvCustomDelimiter",
+      "value" : "|"
+    }, {
+      "name" : "dataFormatConfig.csvCustomEscape",
+      "value" : "\\"
+    }, {
+      "name" : "dataFormatConfig.csvCustomQuote",
+      "value" : "\""
+    }, {
+      "name" : "dataFormatConfig.csvEnableComments",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.csvCommentMarker",
+      "value" : "#"
+    }, {
+      "name" : "dataFormatConfig.csvIgnoreEmptyLines",
+      "value" : true
+    }, {
+      "name" : "dataFormatConfig.csvRecordType",
+      "value" : "LIST_MAP"
+    }, {
+      "name" : "dataFormatConfig.csvSkipStartLines",
+      "value" : 0
+    }, {
+      "name" : "dataFormatConfig.parseNull",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.nullConstant",
+      "value" : "\\\\N"
+    }, {
+      "name" : "dataFormatConfig.xmlRecordElement",
+      "value" : null
+    }, {
+      "name" : "dataFormatConfig.includeFieldXpathAttributes",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.xPathNamespaceContext",
+      "value" : [ ]
+    }, {
+      "name" : "dataFormatConfig.outputFieldAttributes",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.xmlMaxObjectLen",
+      "value" : 4096
+    }, {
+      "name" : "dataFormatConfig.logMode",
+      "value" : "COMMON_LOG_FORMAT"
+    }, {
+      "name" : "dataFormatConfig.logMaxObjectLen",
+      "value" : 1024
+    }, {
+      "name" : "dataFormatConfig.retainOriginalLine",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.customLogFormat",
+      "value" : "%h %l %u %t \"%r\" %>s %b"
+    }, {
+      "name" : "dataFormatConfig.regex",
+      "value" : "^(\\S+) (\\S+) (\\S+) \\[([\\w:/]+\\s[+\\-]\\d{4})\\] \"(\\S+) (\\S+) (\\S+)\" (\\d{3}) (\\d+)"
+    }, {
+      "name" : "dataFormatConfig.fieldPathsToGroupName",
+      "value" : [ {
+        "fieldPath" : "/",
+        "group" : 1
+      } ]
+    }, {
+      "name" : "dataFormatConfig.grokPatternDefinition",
+      "value" : null
+    }, {
+      "name" : "dataFormatConfig.grokPattern",
+      "value" : "%{COMMONAPACHELOG}"
+    }, {
+      "name" : "dataFormatConfig.onParseError",
+      "value" : "ERROR"
+    }, {
+      "name" : "dataFormatConfig.maxStackTraceLines",
+      "value" : 50
+    }, {
+      "name" : "dataFormatConfig.enableLog4jCustomLogFormat",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.log4jCustomLogFormat",
+      "value" : "%r [%t] %-5p %c %x - %m%n"
+    }, {
+      "name" : "dataFormatConfig.avroSchema",
+      "value" : null
+    }, {
+      "name" : "dataFormatConfig.schemaRegistryUrls",
+      "value" : [ ]
+    }, {
+      "name" : "dataFormatConfig.schemaLookupMode",
+      "value" : "SUBJECT"
+    }, {
+      "name" : "dataFormatConfig.subject",
+      "value" : null
+    }, {
+      "name" : "dataFormatConfig.schemaId",
+      "value" : null
+    }, {
+      "name" : "dataFormatConfig.protoDescriptorFile",
+      "value" : null
+    }, {
+      "name" : "dataFormatConfig.messageType",
+      "value" : null
+    }, {
+      "name" : "dataFormatConfig.isDelimited",
+      "value" : true
+    }, {
+      "name" : "dataFormatConfig.binaryMaxObjectLen",
+      "value" : 1024
+    }, {
+      "name" : "dataFormatConfig.datagramMode",
+      "value" : "SYSLOG"
+    }, {
+      "name" : "dataFormatConfig.typesDbPath",
+      "value" : null
+    }, {
+      "name" : "dataFormatConfig.convertTime",
+      "value" : false
+    }, {
+      "name" : "dataFormatConfig.excludeInterval",
+      "value" : true
+    }, {
+      "name" : "dataFormatConfig.authFilePath",
+      "value" : null
+    }, {
+      "name" : "dataFormatConfig.wholeFileMaxObjectLen",
+      "value" : 8192
+    }, {
+      "name" : "dataFormatConfig.rateLimit",
+      "value" : "-1"
+    }, {
+      "name" : "stageOnRecordError",
+      "value" : "TO_ERROR"
+    } ],
+    "uiInfo" : {
+      "description" : "",
+      "label" : "HTTP Server 1",
+      "xPos" : 60,
+      "yPos" : 50,
+      "stageType" : "SOURCE"
+    },
+    "inputLanes" : [ ],
+    "outputLanes" : [ "HTTPServer_01OutputLane15042573926170" ],
+    "eventLanes" : [ ]
+  }, {
+    "instanceName" : "TensorFlow_01",
+    "library" : "streamsets-datacollector-tensorflow-lib",
+    "stageName" : "com_streamsets_pipeline_stage_processor_tensorflow_TensorFlowDProcessor",
+    "stageVersion" : "1",
+    "configuration" : [ {
+      "name" : "modelPath",
+      "value" : "${modelPath}"
+    }, {
+      "name" : "stageOnRecordError",
+      "value" : "TO_ERROR"
+    }, {
+      "name" : "stageRequiredFields",
+      "value" : [ ]
+    }, {
+      "name" : "stageRecordPreconditions",
+      "value" : [ ]
+    } ],
+    "uiInfo" : {
+      "description" : "",
+      "label" : "Tensor Flow 1",
+      "xPos" : 280,
+      "yPos" : 50,
+      "stageType" : "PROCESSOR"
+    },
+    "inputLanes" : [ "HTTPServer_01OutputLane15042573926170" ],
+    "outputLanes" : [ "TensorFlow_01OutputLane15042573959450" ],
+    "eventLanes" : [ ]
+  }, {
+    "instanceName" : "HTTPClient_01",
+    "library" : "streamsets-datacollector-basic-lib",
+    "stageName" : "com_streamsets_pipeline_stage_destination_http_HttpClientDTarget",
+    "stageVersion" : "2",
+    "configuration" : [ {
+      "name" : "conf.dataGeneratorFormatConfig.charset",
+      "value" : "UTF-8"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.csvFileFormat",
+      "value" : "CSV"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.csvHeader",
+      "value" : "NO_HEADER"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.csvReplaceNewLines",
+      "value" : true
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.csvReplaceNewLinesString",
+      "value" : " "
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.csvCustomDelimiter",
+      "value" : "|"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.csvCustomEscape",
+      "value" : "\\"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.csvCustomQuote",
+      "value" : "\""
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.jsonMode",
+      "value" : "MULTIPLE_OBJECTS"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.textFieldPath",
+      "value" : "/text"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.textRecordSeparator",
+      "value" : "\\n"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.textFieldMissingAction",
+      "value" : "ERROR"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.textEmptyLineIfNull",
+      "value" : false
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.avroSchemaSource",
+      "value" : null
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.avroSchema",
+      "value" : null
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.registerSchema",
+      "value" : false
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.schemaRegistryUrlsForRegistration",
+      "value" : [ ]
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.schemaRegistryUrls",
+      "value" : [ ]
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.schemaLookupMode",
+      "value" : "SUBJECT"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.subject",
+      "value" : null
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.subjectToRegister",
+      "value" : null
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.schemaId",
+      "value" : null
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.includeSchema",
+      "value" : true
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.avroCompression",
+      "value" : "NULL"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.binaryFieldPath",
+      "value" : "/"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.protoDescriptorFile",
+      "value" : null
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.messageType",
+      "value" : null
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.fileNameEL",
+      "value" : null
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.wholeFileExistsAction",
+      "value" : "TO_ERROR"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.includeChecksumInTheEvents",
+      "value" : false
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.checksumAlgorithm",
+      "value" : "MD5"
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.xmlPrettyPrint",
+      "value" : true
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.xmlValidateSchema",
+      "value" : false
+    }, {
+      "name" : "conf.dataGeneratorFormatConfig.xmlSchema",
+      "value" : null
+    }, {
+      "name" : "conf.dataFormat",
+      "value" : "JSON"
+    }, {
+      "name" : "conf.resourceUrl",
+      "value" : "${clientHttpUrl}"
+    }, {
+      "name" : "conf.headers",
+      "value" : [ {
+        "key" : "X-SDC-APPLICATION-ID",
+        "value" : "${clientAppId}"
+      } ]
+    }, {
+      "name" : "conf.httpMethod",
+      "value" : "POST"
+    }, {
+      "name" : "conf.methodExpression",
+      "value" : null
+    }, {
+      "name" : "conf.client.transferEncoding",
+      "value" : "CHUNKED"
+    }, {
+      "name" : "conf.client.httpCompression",
+      "value" : "NONE"
+    }, {
+      "name" : "conf.client.connectTimeoutMillis",
+      "value" : 0
+    }, {
+      "name" : "conf.client.readTimeoutMillis",
+      "value" : 0
+    }, {
+      "name" : "conf.client.numThreads",
+      "value" : 1
+    }, {
+      "name" : "conf.client.authType",
+      "value" : "NONE"
+    }, {
+      "name" : "conf.client.useOAuth2",
+      "value" : false
+    }, {
+      "name" : "conf.client.oauth.consumerKey",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth.consumerSecret",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth.token",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth.tokenSecret",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.credentialsGrantType",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.tokenUrl",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.clientId",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.clientSecret",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.username",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.password",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.resourceOwnerClientId",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.resourceOwnerClientSecret",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.algorithm",
+      "value" : "NONE"
+    }, {
+      "name" : "conf.client.oauth2.key",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.jwtClaims",
+      "value" : null
+    }, {
+      "name" : "conf.client.oauth2.transferEncoding",
+      "value" : "BUFFERED"
+    }, {
+      "name" : "conf.client.oauth2.additionalValues",
+      "value" : [ ]
+    }, {
+      "name" : "conf.client.basicAuth.username",
+      "value" : null
+    }, {
+      "name" : "conf.client.basicAuth.password",
+      "value" : null
+    }, {
+      "name" : "conf.client.useProxy",
+      "value" : false
+    }, {
+      "name" : "conf.client.proxy.uri",
+      "value" : null
+    }, {
+      "name" : "conf.client.proxy.username",
+      "value" : null
+    }, {
+      "name" : "conf.client.proxy.password",
+      "value" : null
+    }, {
+      "name" : "conf.client.tlsConfig.tlsEnabled",
+      "value" : false
+    }, {
+      "name" : "conf.client.tlsConfig.keyStoreFilePath",
+      "value" : null
+    }, {
+      "name" : "conf.client.tlsConfig.keyStoreType",
+      "value" : "JKS"
+    }, {
+      "name" : "conf.client.tlsConfig.keyStorePassword",
+      "value" : null
+    }, {
+      "name" : "conf.client.tlsConfig.keyStoreAlgorithm",
+      "value" : "SunX509"
+    }, {
+      "name" : "conf.client.tlsConfig.trustStoreFilePath",
+      "value" : null
+    }, {
+      "name" : "conf.client.tlsConfig.trustStoreType",
+      "value" : "JKS"
+    }, {
+      "name" : "conf.client.tlsConfig.trustStorePassword",
+      "value" : null
+    }, {
+      "name" : "conf.client.tlsConfig.trustStoreAlgorithm",
+      "value" : "SunX509"
+    }, {
+      "name" : "conf.client.tlsConfig.useDefaultProtocols",
+      "value" : true
+    }, {
+      "name" : "conf.client.tlsConfig.protocols",
+      "value" : [ ]
+    }, {
+      "name" : "conf.client.tlsConfig.useDefaultCiperSuites",
+      "value" : true
+    }, {
+      "name" : "conf.client.tlsConfig.cipherSuites",
+      "value" : [ ]
+    }, {
+      "name" : "conf.singleRequestPerBatch",
+      "value" : true
+    }, {
+      "name" : "conf.rateLimit",
+      "value" : 0
+    }, {
+      "name" : "conf.maxRequestCompletionSecs",
+      "value" : 60
+    }, {
+      "name" : "stageOnRecordError",
+      "value" : "TO_ERROR"
+    }, {
+      "name" : "stageRequiredFields",
+      "value" : [ ]
+    }, {
+      "name" : "stageRecordPreconditions",
+      "value" : [ ]
+    } ],
+    "uiInfo" : {
+      "description" : "",
+      "label" : "HTTP Client 1",
+      "xPos" : 500,
+      "yPos" : 49,
+      "stageType" : "TARGET"
+    },
+    "inputLanes" : [ "TensorFlow_01OutputLane15042573959450" ],
+    "outputLanes" : [ ],
+    "eventLanes" : [ ]
+  } ],
+  "errorStage" : {
+    "instanceName" : "Discard_ErrorStage",
+    "library" : "streamsets-datacollector-basic-lib",
+    "stageName" : "com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget",
+    "stageVersion" : "1",
+    "configuration" : [ ],
+    "uiInfo" : {
+      "description" : "",
+      "label" : "Error Records - Discard",
+      "xPos" : 720,
+      "yPos" : 50,
+      "stageType" : "TARGET"
+    },
+    "inputLanes" : [ ],
+    "outputLanes" : [ ],
+    "eventLanes" : [ ]
+  },
+  "info" : {
+    "pipelineId" : "httpServerToTensorToHttp",
+    "title" : "httpServerToTensorToHttp",
+    "description" : "",
+    "created" : 1504257389482,
+    "lastModified" : 1504257609956,
+    "creator" : "admin",
+    "lastModifier" : "admin",
+    "lastRev" : "0",
+    "uuid" : "0ff091ed-41c3-435c-b1e2-186d5eb39d56",
+    "valid" : true,
+    "metadata" : {
+      "labels" : [ ]
+    },
+    "name" : "httpServerToTensorToHttp",
+    "sdcVersion" : "2.8.0.0-SNAPSHOT",
+    "sdcId" : "258ce8ef-8ef6-11e7-8f48-9d3b10c2b3b4"
+  },
+  "metadata" : {
+    "labels" : [ ]
+  },
+  "statsAggregatorStage" : {
+    "instanceName" : "WritetoDPMdirectly_StatsAggregatorStage",
+    "library" : "streamsets-datacollector-basic-lib",
+    "stageName" : "com_streamsets_pipeline_stage_destination_devnull_StatsDpmDirectlyDTarget",
+    "stageVersion" : "1",
+    "configuration" : [ ],
+    "uiInfo" : {
+      "description" : "",
+      "label" : "Stats Aggregator - Write to DPM directly",
+      "xPos" : 280,
+      "yPos" : 50,
+      "stageType" : "TARGET"
+    },
+    "inputLanes" : [ ],
+    "outputLanes" : [ ],
+    "eventLanes" : [ ]
+  },
+  "startEventStages" : [ {
+    "instanceName" : "Discard_StartEventStage",
+    "library" : "streamsets-datacollector-basic-lib",
+    "stageName" : "com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget",
+    "stageVersion" : "1",
+    "configuration" : [ ],
+    "uiInfo" : {
+      "description" : "",
+      "label" : "Start Event - Discard",
+      "xPos" : 280,
+      "yPos" : 50,
+      "stageType" : "TARGET"
+    },
+    "inputLanes" : [ ],
+    "outputLanes" : [ ],
+    "eventLanes" : [ ]
+  } ],
+  "stopEventStages" : [ {
+    "instanceName" : "Discard_StopEventStage",
+    "library" : "streamsets-datacollector-basic-lib",
+    "stageName" : "com_streamsets_pipeline_stage_destination_devnull_ToErrorNullDTarget",
+    "stageVersion" : "1",
+    "configuration" : [ ],
+    "uiInfo" : {
+      "description" : "",
+      "label" : "Stop Event - Discard",
+      "xPos" : 280,
+      "yPos" : 50,
+      "stageType" : "TARGET"
+    },
+    "inputLanes" : [ ],
+    "outputLanes" : [ ],
+    "eventLanes" : [ ]
+  } ],
+  "issues" : {
+    "pipelineIssues" : [ ],
+    "stageIssues" : { },
+    "issueCount" : 0
+  },
+  "previewable" : true,
+  "valid" : true
+}
