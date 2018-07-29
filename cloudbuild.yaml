@@ -1,0 +1,7 @@
+steps:
+- name: 'gcr.io/cloud-builders/gradle'
+  args: ['buildDockerImage-${_ARCH}']
+substitutions:
+  _ARCH: amd64
+options:
+  substitution_option: 'ALLOW_LOOSE'
